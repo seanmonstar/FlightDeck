@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Code Workflow &mdash; Add-on Builder v1.0a5 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0a5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Add-on Builder v1.0a5 documentation" href="../../" />
+    <link rel="up" title="Contribution" href="../" />
+    <link rel="next" title="Typical git commands used by developer" href="../developer_commands/" />
+    <link rel="prev" title="Installation for development" href="../installation/" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../developer_commands/" title="Typical git commands used by developer"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../installation/" title="Installation for development"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../">Add-on Builder v1.0a5 documentation</a> &raquo;</li>
+          <li><a href="../" accesskey="U">Contribution</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="code-workflow">
+<span id="id1"></span><h1>Code Workflow<a class="headerlink" href="#code-workflow" title="Permalink to this headline">¶</a></h1>
+<p>Code Workflow is inspired by <a class="reference external" href="http://nvie.com/git-model">Vincent Driessen&#8217;s model</a>. Please read for a detailed explanation.</p>
+<div class="figure">
+<img alt="../_static/workflow-thumb.png" src="../_static/workflow-thumb.png" style="width: 250px;" />
+<p class="caption">Code Workflow Diagram [<a class="reference internal" href="../code_workflow_diagram/#code-workflow-diagram"><em>full size</em></a>]</p>
+</div>
+<div class="section" id="decentralized-but-centralized">
+<h2>Decentralized, but Centralized<a class="headerlink" href="#decentralized-but-centralized" title="Permalink to this headline">¶</a></h2>
+<p>Every developer has his own repository called <tt class="docutils literal"><span class="pre">origin</span></tt> in this and following documents. There is only one referencing repository called <tt class="docutils literal"><span class="pre">main</span></tt>. It will contain <tt class="docutils literal"><span class="pre">production</span></tt>, <tt class="docutils literal"><span class="pre">staging</span></tt>, <tt class="docutils literal"><span class="pre">release-*</span></tt> and <tt class="docutils literal"><span class="pre">master</span></tt> branches.</p>
+</div>
+<div class="section" id="main-branches">
+<h2>Main branches<a class="headerlink" href="#main-branches" title="Permalink to this headline">¶</a></h2>
+<p>Main repository holds 3 infinite and a number of short term <tt class="docutils literal"><span class="pre">release-*</span></tt> branches.</p>
+<div class="section" id="production">
+<h3>production<a class="headerlink" href="#production" title="Permalink to this headline">¶</a></h3>
+<p>Must branch off from: <tt class="docutils literal"><span class="pre">staging</span></tt></p>
+<p>This is the branch from which one can get a production ready code.</p>
+</div>
+<div class="section" id="staging">
+<h3>staging<a class="headerlink" href="#staging" title="Permalink to this headline">¶</a></h3>
+<p>Must branch off from: <tt class="docutils literal"><span class="pre">release-*</span></tt>
+Must branch back to: <tt class="docutils literal"><span class="pre">production</span></tt></p>
+<p>This is the pranch from which a staging server can get the code.</p>
+</div>
+<div class="section" id="release">
+<h3>release-*<a class="headerlink" href="#release" title="Permalink to this headline">¶</a></h3>
+<p>Must branch off from: <tt class="docutils literal"><span class="pre">master</span></tt>
+Takes merges from: <tt class="docutils literal"><span class="pre">master</span></tt> or <tt class="docutils literal"><span class="pre">hotfix-*</span></tt>
+Branches back to: <tt class="docutils literal"><span class="pre">staging</span></tt></p>
+<p>This is the branch used to prepare the release. When we think it is ready, <tt class="docutils literal"><span class="pre">staging</span></tt> branch merges from it.</p>
+</div>
+<div class="section" id="master">
+<h3>master<a class="headerlink" href="#master" title="Permalink to this headline">¶</a></h3>
+<p>Takes merges from: <tt class="docutils literal"><span class="pre">bug-*</span></tt>, <tt class="docutils literal"><span class="pre">hotfix-*</span></tt></p>
+<p>This is our development branch - every developer&#8217;s repository should have their <tt class="docutils literal"><span class="pre">origin/master</span></tt> in sync with the <tt class="docutils literal"><span class="pre">main/master</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="origin-branches">
+<h2>Origin branches<a class="headerlink" href="#origin-branches" title="Permalink to this headline">¶</a></h2>
+<p>Origin is the remote repository owned by the developer</p>
+<div class="section" id="id2">
+<h3>master<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Updates from <tt class="docutils literal"><span class="pre">main/master</span></tt>
+May merge back from <tt class="docutils literal"><span class="pre">bug-*</span></tt> and <tt class="docutils literal"><span class="pre">hotfix-*</span></tt> to provide local master repositories. It&#8217;s usually not to be shared with other developers, especially <tt class="docutils literal"><span class="pre">main/master</span></tt> will not merge from it.</p>
+</div>
+<div class="section" id="bug">
+<h3>bug-*<a class="headerlink" href="#bug" title="Permalink to this headline">¶</a></h3>
+<p>Must branch of from <tt class="docutils literal"><span class="pre">master</span></tt> or other <tt class="docutils literal"><span class="pre">bug-*</span></tt>.
+Naming convention: <tt class="docutils literal"><span class="pre">bug-{bugzilla_bug_id}-short_description</span></tt></p>
+<p>Fixes one bug. It will be merged to the <tt class="docutils literal"><span class="pre">main</span></tt> repository by <em class="xref std std-ref">Repository Manager</em></p>
+</div>
+<div class="section" id="hotfix">
+<h3>hotfix-*<a class="headerlink" href="#hotfix" title="Permalink to this headline">¶</a></h3>
+<p>Must branch off from <tt class="docutils literal"><span class="pre">main/release-*</span></tt>, <tt class="docutils literal"><span class="pre">main/staging</span></tt> or <tt class="docutils literal"><span class="pre">main/production</span></tt>
+Merges back to <tt class="docutils literal"><span class="pre">main/staging</span></tt> or <tt class="docutils literal"><span class="pre">main/production</span></tt></p>
+<p>This branch is for fixes to freezed code - in staging or production</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Code Workflow</a><ul>
+<li><a class="reference internal" href="#decentralized-but-centralized">Decentralized, but Centralized</a></li>
+<li><a class="reference internal" href="#main-branches">Main branches</a><ul>
+<li><a class="reference internal" href="#production">production</a></li>
+<li><a class="reference internal" href="#staging">staging</a></li>
+<li><a class="reference internal" href="#release">release-*</a></li>
+<li><a class="reference internal" href="#master">master</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#origin-branches">Origin branches</a><ul>
+<li><a class="reference internal" href="#id2">master</a></li>
+<li><a class="reference internal" href="#bug">bug-*</a></li>
+<li><a class="reference internal" href="#hotfix">hotfix-*</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../installation/"
+                        title="previous chapter">Installation for development</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../developer_commands/"
+                        title="next chapter">Typical git commands used by developer</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/development/code_workflow.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search/" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../developer_commands/" title="Typical git commands used by developer"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../installation/" title="Installation for development"
+             >previous</a> |</li>
+        <li><a href="../../">Add-on Builder v1.0a5 documentation</a> &raquo;</li>
+          <li><a href="../" >Contribution</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Mozilla.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>

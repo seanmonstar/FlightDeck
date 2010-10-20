@@ -1,0 +1,188 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Typical git commands used by developer &mdash; Add-on Builder v1.0a5 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0a5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Add-on Builder v1.0a5 documentation" href="../../" />
+    <link rel="up" title="Contribution" href="../" />
+    <link rel="next" title="Deployment on the server" href="../../server/" />
+    <link rel="prev" title="Code Workflow" href="../code_workflow/" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../server/" title="Deployment on the server"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../code_workflow/" title="Code Workflow"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../">Add-on Builder v1.0a5 documentation</a> &raquo;</li>
+          <li><a href="../" accesskey="U">Contribution</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="typical-git-commands-used-by-developer">
+<h1>Typical git commands used by developer<a class="headerlink" href="#typical-git-commands-used-by-developer" title="Permalink to this headline">¶</a></h1>
+<p>Developer has a set of commands which are common for that workflow.
+Please take these advices as a starting point. They do not cover whole
+git functionality.</p>
+<div class="section" id="syncing-master-branch">
+<h2>Syncing master branch<a class="headerlink" href="#syncing-master-branch" title="Permalink to this headline">¶</a></h2>
+<p>Master branch has to be usually in sync with the main master branch:</p>
+<div class="highlight-python"><pre>git checkout master
+git pull main master</pre>
+</div>
+</div>
+<div class="section" id="fixing-a-bug">
+<h2>Fixing a bug<a class="headerlink" href="#fixing-a-bug" title="Permalink to this headline">¶</a></h2>
+<p>Checkout the branch which needs to be fixed. If it&#8217;s <tt class="docutils literal"><span class="pre">master</span></tt> (most
+common case), first sync as above.</p>
+<p>Create a branch with a bug number:</p>
+<div class="highlight-python"><pre>git checkout -b bug-12345-bug_description</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><tt class="docutils literal"><span class="pre">-b</span></tt> tells git to create a new branch. You may switch back to
+<tt class="docutils literal"><span class="pre">master</span></tt> or other already created branch by:</p>
+<div class="last highlight-python"><pre>git checkout branch_name`</pre>
+</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the bug is a hotfix it will be called hotfix-12345-branch_description</p>
+</div>
+<p>Make some changes, publish the bug to the <tt class="docutils literal"><span class="pre">origin</span></tt> repository:</p>
+<div class="highlight-python"><pre>git commit [ list_of_files | -a ] -v
+git push origin bug-12345-bug_description</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">-v</span></tt> switch is to tell git to use &#8216;&#8217;verbose&#8217;&#8217; mode which opens an
+editor and displays a diff.</p>
+</div>
+<p>Send a pull request to the <cite>Repository Manager &lt;repository-manager&gt;</cite>.</p>
+<p>After the bug has been succesfully resolved the branch may be
+removed:</p>
+<div class="highlight-python"><pre>git branch -d bug-12345-bug_description</pre>
+</div>
+</div>
+<div class="section" id="working-with-a-fellow-developer">
+<h2>Working with a fellow developer<a class="headerlink" href="#working-with-a-fellow-developer" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes on one bug there will be working more people. It is advised to
+use the same branch name.</p>
+<p>First create am alias for the remote repository:</p>
+<div class="highlight-python"><pre>git remote add -t bug_12345-bug_description fellow http://github.com/{fellow_username}/FlightDeck.git</pre>
+</div>
+<p>Create a branch which will merge from the remote repository:</p>
+<div class="highlight-python"><pre>git checkout -b bug_12345-bug_description fellow/bug-12345-bug_description</pre>
+</div>
+<p>Sending the changes to <tt class="docutils literal"><span class="pre">origin</span></tt> works as before:</p>
+<div class="highlight-python"><pre>git commit [ list_of_files | -a ] -v
+git push origin bug-12345-bug_description</pre>
+</div>
+<p>If you&#8217;d like later to load changes done by &#8220;fellow&#8221; - pull them from
+the remote branch:</p>
+<div class="highlight-python"><pre>git pull fellow/bug-12345-bug_description</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember to checkout the <tt class="docutils literal"><span class="pre">bug-12345-bug_description</span></tt> before</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Typical git commands used by developer</a><ul>
+<li><a class="reference internal" href="#syncing-master-branch">Syncing master branch</a></li>
+<li><a class="reference internal" href="#fixing-a-bug">Fixing a bug</a></li>
+<li><a class="reference internal" href="#working-with-a-fellow-developer">Working with a fellow developer</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../code_workflow/"
+                        title="previous chapter">Code Workflow</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../server/"
+                        title="next chapter">Deployment on the server</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/development/developer_commands.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search/" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../server/" title="Deployment on the server"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../code_workflow/" title="Code Workflow"
+             >previous</a> |</li>
+        <li><a href="../../">Add-on Builder v1.0a5 documentation</a> &raquo;</li>
+          <li><a href="../" >Contribution</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Mozilla.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+    </div>
+  </body>
+</html>
