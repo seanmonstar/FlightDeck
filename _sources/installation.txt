@@ -1,7 +1,7 @@
-.. _dev-install:
+.. _install:
 
-Installation for development
-============================
+Installation
+============
 
 
 Requirements
@@ -13,7 +13,7 @@ FligtDeck depends on:
 
 We also suggest:
  * virtualenv
- * virtualenvwrapper
+ * `virtualenvwrapper <http://www.doughellmann.com/docs/virtualenvwrapper/>`_
 
 
 Installing
@@ -68,7 +68,7 @@ well.  This command will build the structure::
 FlightDeck needs to know about all the SDKs you have availalbe.  This command
 will make it look for them and initialize the database::
 
-    ./manage.py create_core_lib
+    ./manage.py add_core_lib jetpack-sdk-0.8
 
 If you're writing code and would like to add some test data to the database
 you can load some fixtures::
