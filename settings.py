@@ -290,15 +290,16 @@ INSTALLED_APPS = [
     'django_nose',
 
 # FLIGHTDECK APPS
-    'base',              # basic flightdeck things (utils, urls)
-    'person',            # user related stuff (profile etc.)
-    'search',            # ElasticSearch and search views.
     'amo',               # currently addons.mozilla.org authentication
-    'jetpack',           # Jetpack functionality
-    'xpi',               # XPI management
-    'repackage',         # repackaging XPI
-    'tutorial',          # Load tutorial templates
+    'api',               # OAuth API
+    'base',              # basic flightdeck things (utils, urls)
     'cronjobs',
+    'jetpack',           # Jetpack functionality
+    'person',            # user related stuff (profile etc.)
+    'repackage',         # repackaging XPI
+    'search',            # ElasticSearch and search views.
+    'tutorial',          # Load tutorial templates
+    'xpi',               # XPI management
 
 # 3RD PARTY APPS
     'djcelery',

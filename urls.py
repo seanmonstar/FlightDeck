@@ -27,6 +27,8 @@ urls.extend([
     # AMO upload
     (r'^amo/', include('amo.urls')),
 
+    (r'^api/', include('api.urls')),
+
     # /docs are an Apache rewrite
 
     (r'^tutorial/', include('tutorial.urls')),
