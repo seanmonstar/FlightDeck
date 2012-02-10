@@ -26,8 +26,8 @@ def public_profile(r, username):
     except ObjectDoesNotExist:
         raise Http404
     person = profile.user
-    addons = person.packages_originated.addons().active()
-    libraries = person.packages_originated.libraries().active()
+    addons = person.packages_originated.addons().active().has_latest()
+    libraries = person.packages_originated.libraries().active().has_latest()
     # if owner of the profile and not specially wanted to see it - redirect
     # to dashboard
     return render_to_response("profile.html", {
@@ -40,10 +40,10 @@ def public_profile(r, username):
 
 
 def get_packages(person):
-    addons = person.packages_originated.addons().active()
-    libraries = person.packages_originated.libraries().active()
-    disabled_addons = person.packages_originated.disabled().filter(type='a')
-    disabled_libraries = person.packages_originated.disabled().filter(type='l')
+    addons = person.packages_originated.addons().active().has_latest()
+    libraries = person.packages_originated.libraries().active().has_latest()
+    disabled_addons = person.packages_originated.disabled().addons().has_latest()
+    disabled_libraries = person.packages_originated.disabled().libraries().has_latest()
     return addons, libraries, disabled_addons, disabled_libraries
 
 
@@ -74,8 +74,8 @@ def dashboard_browser(r, page_number=1, type=None, disabled=False):
     """
 
     author = r.user
-    packages = author.packages_originated.disabled() \
-            if disabled else author.packages_originated.active()
+    packages = author.packages_originated.disabled().has_latest() \
+            if disabled else author.packages_originated.active().has_latest()
 
     if type:
         other_type = 'l' if type == 'a' else 'a'
@@ -113,18 +113,18 @@ def browserid_authenticate(request, assertion):
     good, but no account exists on flightdeck, create one.
     """
     backend = browserid_auth.BrowserIDBackend()
-    
+
     result = backend.verify(assertion, settings.SITE_URL)
     if not result:
         return (None, None)
-    
+
     email = result['email']
-    
+
     amouser = AMOAuthentication.auth_browserid_authenticate(email)
-    
+
     if amouser == None:
         return (None,None)
-    
+
     users = User.objects.filter(username=amouser['id'])
     if len(users) == 1:
         try:
@@ -136,29 +136,29 @@ def browserid_authenticate(request, assertion):
         user = User.objects.create(username=amouser['id'], email=email)
         profile = Profile(user=user)
         profile.user.save()
-    
+
     profile.user.backend = 'django_browserid.auth.BrowserIDBackend'
     profile.update_from_AMO(amouser)
-    
+
     return (profile, None)
-    
+
 
 def browserid_login(request):
     """
     If browserID is enabled, then try to authenticate with the assertion
     """
-    if waffle.switch_is_active('browserid-login'):    
+    if waffle.switch_is_active('browserid-login'):
         if request.user.is_authenticated():
             return http.HttpResponse(status=200)
-            
+
         profile, msg = browserid_authenticate(
             request,
             assertion=request.POST['assertion'])
-       
-        if profile is not None:            
+
+        if profile is not None:
             auth.login(request, profile.user)
             return http.HttpResponse(status=200)
-            
+
         return http.HttpResponse(status=401)
     else:
         return http.HttpResponse(status=403)

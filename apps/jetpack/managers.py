@@ -27,6 +27,9 @@ class PackageManager(QuerySetManager):
 
     class QuerySet(QuerySetManager.QuerySet):
 
+        def has_latest(self):
+            return self.exclude(latest=None)
+
         def active(self, viewer=None):
             " filter out inactive packages "
             active_q = models.Q(active=True)

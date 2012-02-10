@@ -51,7 +51,7 @@ def browser(request, page_number=1, type_id=None, username=None):
     """
     # calculate which template to use
     template_suffix = ''
-    packages = Package.objects.active()
+    packages = Package.objects.active().has_latest()
 
     author = None
     if username:
